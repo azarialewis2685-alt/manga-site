@@ -6,6 +6,136 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <main id="result">
+        <div class="card">
+            <figure>
+                <img src="https://cdn.myanimelist.net/images/anime/9/76662.jpg" alt="jshkvol19">
+                <figcaption>Manga Title</figcaption>
+            </figure>           
+        </div>
+    </main>
 </body>
+<script>
+    // let state = [];
+
+    // async function getData(){
+    //     let response = await fetch('https://weblabs.web.app/api/anime/all.json');
+    //     state = await response.json();
+    //     displayData(state);
+    // }
+    // function displayData(records){
+    //     let result = document.querySelector('#result');
+    //     let html = '';
+    //     for (let rec of records){
+    //         html += `<div class="card">
+    //         <figure>
+    //             <img src="${rec.img_url}" alt="jshkvol19">
+    //             <figcaption>${rec.title}</figcaption>
+    //         </figure>           
+    //     </div>`;
+    //     }
+    //     result.innerHTML = html;
+    // }
+    // getData();
+
+
+// Here we define our query as a multi-line string
+// Storing it in a separate .graphql/.gql file is also possible
+var query = `
+query (
+  $page: Int = 1
+  $type: MediaType
+  $searc: String
+) {
+  Page(page: $page, perPage: 20) {
+    pageInfo {
+      hasNextPage
+    }
+    media(
+      type: $type
+      search: $searc
+    ) {
+      id
+      title {
+        romaji
+      }
+        genres
+    }
+  }
+}
+`;
+
+// Define our query variables and values that will be used in the query request
+var variables = {
+    type: 'MANGA',
+    searc: 'Noragami'
+};
+
+// Define the config we'll need for our Api request
+var url = 'https://graphql.anilist.co',
+    options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+            query: query,
+            variables: variables
+        })
+    };
+
+// Make the HTTP Api request
+fetch(url, options).then(handleResponse)
+    .then(handleData)
+    .catch(handleError);
+
+function handleResponse(response) {
+    return response.json().then(function (json) {
+        return response.ok ? json : Promise.reject(json);
+    });
+}
+
+function handleData(data) {
+    console.log(data);
+}
+
+function handleError(error) {
+    alert('Error, check console');
+    console.error(error);
+}
+
+
+
+
+    // async function name() {
+    //     const title = 'Kanojyo to Himitsu to Koimoyou';
+    //     // const axios = await fetch('axios');
+
+    // const baseUrl = 'https://api.mangadex.org';
+
+    // const resp = await fetch('https://api.mangadex.org/manga',{
+    //     method: 'GET',
+    //     url: `${baseUrl}/manga`,
+    //     headers: {"User-Agent":"MagaScribe-assignment"},
+    //     params: {
+    //         title: title
+    //     }
+    // });
+    //     console.log(resp);
+    // console.log(resp.data.data.map(manga => manga.id));
+    // }
+    // name();
+
+//  query ($id: Int) {
+// 	Media (id: 1) {
+// 		id
+// 		title {
+// 			romaji
+// 			english
+// 			native
+// 		}
+// 	}
+// }
+</script>
 </html>
