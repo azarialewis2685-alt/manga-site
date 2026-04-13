@@ -131,8 +131,14 @@ position: relative;
     overflow: hidden;
 }
 .card button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
     z-index: 10;
+}
+.material-symbols-outlined:hover{
+    font-variation-settings: 'FILL' 1
 }
 
 .hover-card {
