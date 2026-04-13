@@ -116,7 +116,7 @@
     z-index: 10;
 }
 
-    .hover-card {
+   .hover-card {
     position: absolute;
     top: 0;
     left: 0;
@@ -130,15 +130,14 @@
     display: none;
     flex-direction: column;
 
-    z-index: 5; /* 🔥 increase */
-
+    z-index: 5;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+
     font-size: 12px;
-
     overflow: hidden;
+
+    pointer-events: none; 
 }
-
-
         main{
             display: flex;
             flex-direction: column;
@@ -256,10 +255,15 @@
             flex-grow: 9;
             max-height: 90%;
             object-fit: cover;
-        }
-        .card figure a{
-            display: contents;
-        }
+        }.card img {
+    width: 100%;
+    aspect-ratio: 2 / 3;   
+    object-fit: cover;
+    border-radius: 8px;
+}
+      .card figure a {
+    display: block;
+}
         .card figure ul{
             margin: 0;
             padding: 0;
@@ -351,15 +355,72 @@
             background-color: #444444;
             color: #fff;
         }
+/*  SIDEBAR STYLE */
 
-        
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* hidden */
+    width: 250px;
+    height: 100%;
+    background: #ECE6F0;
+    padding: 20px;
+    transition: 0.3s;
+    z-index: 1000;
+}
+
+.sidebar a {
+    display: block;
+    margin: 15px 0;
+    text-decoration: none;
+    color: #444;
+    font-weight: 600;
+}
+
+.sidebar a:hover {
+    color: #FEC63D;
+}
+
+.close-btn {
+    font-size: 20px;
+    cursor: pointer;
+}
+.active-page {
+    background: #444;
+    color: white;
+}
+   .card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}     
+button {
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    opacity: 0.8;
+}
     </style>
 </head>
 <body>
+    <!--SIDEBAR MENU -->
+<div id="sidebar" class="sidebar">
+    <span class="close-btn" onclick="closeMenu()">✖</span>
+
+    <a href="index.html">Home</a>
+    <a href="#bkm">Bookmarks</a>
+    <a href="#">Filter by Genre</a>
+    <a href="#">Random</a>
+    <a href="#">Contact</a>
+</div>
     <header>
         
         <div id="logo" class="nav-links">
-            <span class="material-symbols-outlined" id="menu">menu</span>
+          <span class="material-symbols-outlined" id="menu" onclick="openMenu()">menu</span>
             <span class="material-symbols-outlined" id="bkm-logo">collections_bookmark</span>
             <a href="index.html"><h1>Manga<span class="accent-color">Scribe</span></h1></a>
         </div>
@@ -582,7 +643,26 @@ function handleData(data) {
 function handleError(error) {
     alert('Error, check console');
     console.error(error);
+}function openMenu(){
+    document.getElementById("sidebar").style.left = "0";
 }
+window.onclick = function(event) {
+    let sidebar = document.getElementById("sidebar");
+    let menuBtn = document.getElementById("menu");
+
+    if (
+        event.target !== sidebar &&
+        !sidebar.contains(event.target) &&
+        event.target !== menuBtn
+    ) {
+        sidebar.style.left = "-250px";
+    }
+}
+
+function closeMenu(){
+    document.getElementById("sidebar").style.left = "-250px";
+}
+
 
 function showData(records){
     let array = records.data.Page.media;
@@ -596,45 +676,48 @@ function renderManga(array){
     let html = '';
 
     for (let rec of array){
-    
+
+       
         let cleanDesc = (rec.description || "")
-            .replace(/<[^>]+>/g, "")   // remove HTML
-            .replace(/["'`]/g, "")     // remove quotes
-            .substring(0, 120);        // shorten
+            .replace(/<[^>]+>/g, "")
+            .replace(/["'`]/g, "")
+            .substring(0, 120);
 
         let genres = rec.genres ? rec.genres.slice(0, 3).join(", ") : "";
 
-        html += `<div class="card">
+        html += `
+        <div class="card">
 
-                    <figure class="manga-card"
-                        onmouseenter="showPreviewCard(this, '${cleanDesc}', '${genres}', '${rec.coverImage?.extraLarge}')"
-                        onmouseleave="hidePreviewCard(this)">
+            <figure class="manga-card"
+                onmouseenter="showPreviewCard(this, '${cleanDesc}', '${genres}', '${rec.coverImage?.extraLarge}')"
+                onmouseleave="hidePreviewCard(this)">
 
-                        <a href="mangaDetails.html?id=${rec.id}">
-                            <img src="${rec.coverImage?.extraLarge || 'https://via.placeholder.com/150'}">
-                        </a>
+              
+                <a href="mangaDetails.html?id=${rec.id}">
+                    <img src="${rec.coverImage?.extraLarge || 'https://via.placeholder.com/150x200'}">
+                </a>
 
-                        <figcaption>
-                            <ul>
-                                <li class="card-title">${rec.title.romaji}</li>
-                                <li>${rec.title.english || ''}</li>
-                            </ul>
+                <figcaption>
+                    <ul>
+                        <li class="card-title">${rec.title.romaji}</li>
+                        <li>${rec.title.english || ''}</li>
+                    </ul>
 
-                            <button onclick="addBookmark(${rec.id})">
-                                Bookmark
-                            </button>
-                        </figcaption>
+                    <button onclick="addBookmark(${rec.id})">
+                        Bookmark
+                    </button>
+                </figcaption>
 
-                        <div class="hover-card"></div>
+                <!--  HOVER CARD -->
+                <div class="hover-card"></div>
 
-                    </figure>
+            </figure>
 
-                </div>`;
-        }
+        </div>`;
+    }
 
     result.innerHTML = html;
 }
-
 function showPreview(e, text){
     let box = document.getElementById("previewBox");
 
@@ -657,20 +740,63 @@ function hidePreview(){
         manga.title.romaji.toLowerCase().includes(query) ||
         (manga.title.english && manga.title.english.toLowerCase().includes(query))
     );
-
+if(filtered.length === 0){
+    document.querySelector('#page').innerHTML = "<p>No manga found</p>";
+    return;
+}
     renderManga(filtered);
 }
-function showPreviewCard(element, desc, genres, image){
+function showPreviewCard(element, desc, genres, image, id){
 
     let card = element.querySelector(".hover-card");
 
-    card.innerHTML = `
-        <img src="${image}" style="width:100%; height:120px; object-fit:cover; border-radius:6px;">
-        <p><b>Genre:</b> ${genres}</p>
-        <p><b>Synopsis:</b> ${desc}...</p>
-    `;
+    
+    if (desc && desc.trim() !== "") {
 
+        card.innerHTML = `
+            <img src="${image}" style="width:100%; height:120px; object-fit:cover; border-radius:6px;">
+            <p><b>Genre:</b> ${genres || "N/A"}</p>
+            <p><b>Synopsis:</b> ${desc}...</p>
+        `;
+
+        card.style.display = "block";
+        return;
+    }
+
+    // (BOOKMARKS) → FETCH DATa
+    card.innerHTML = "Loading...";
     card.style.display = "block";
+
+    fetch("https://graphql.anilist.co", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            query: `
+            query ($id: Int){
+                Media(id: $id){
+                    description
+                    genres
+                }
+            }`,
+            variables: { id: Number(id) }
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        let m = data?.data?.Media;
+
+        let clean = (m?.description || "No description available")
+            .replace(/<[^>]+>/g, "")
+            .replace(/\s+/g, " ")
+            .substring(0, 120);
+
+        card.innerHTML = `
+            <img src="${image}" style="width:100%; height:120px; object-fit:cover; border-radius:6px;">
+            <p><b>Genre:</b> ${(m?.genres || []).join(", ") || "N/A"}</p>
+            <p><b>Synopsis:</b> ${clean}...</p>
+        `;
+    });
 }
 
 function hidePreviewCard(element){
@@ -697,21 +823,35 @@ async function loggedIn(){
     }
 }
 loggedIn();
-function addBookmark(manga) {
-   
-  if(localStorage.getItem("loggedIn") !== "true"){
+function addBookmark(id) {
+
+    if(localStorage.getItem("loggedIn") !== "true"){
         alert("Please log in to bookmark manga");
-        return; // stop function
+        return;
     }
 
     let bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
 
-    let exists = bookmarks.some(item => item.id === manga.id);
+    
+    let manga = allManga.find(m => m.id == id);
+
+    if (!manga) return;
+
+    let exists = bookmarks.some(item => item.id == manga.id);
 
     if (!exists) {
-        bookmarks.push(manga);
+
+        let newBookmark = {
+            id: manga.id,
+            title: manga.title,
+            coverImage: manga.coverImage?.extraLarge || ''
+        };
+
+        bookmarks.push(newBookmark);
+
         localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
         alert("Bookmarked!");
+
     } else {
         alert("Already bookmarked!");
     }
@@ -720,34 +860,49 @@ function addBookmark(manga) {
 }
 
 function displayBookmarks() {
-    console.log('displaying bookmarks');
     let bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
     let section = document.querySelector('#bkm');
 
     let html = `<h2>Your Bookmarks</h2><hr>`;
 
     if (bookmarks.length === 0) {
-        html += `
-        <div class="no-bkmarks">
-            <p>No bookmarks yet</p>
-        </div>`;
+        html += `<p>No bookmarks yet</p>`;
     } else {
-        html += `<div id="bookmark-list">`;
+
+        html += `<div style="display:flex; flex-wrap:wrap; justify-content:center;">`;
 
         for (let m of bookmarks) {
-            html += `
-           <div class="card">
-    <img src="${m.coverImage?.extraLarge || 'https://via.placeholder.com/150'}"
-    style="width:100%; height:200px; object-fit:cover;">
-                <ul>
-                    <li class="card-title">${m.title.romaji}</li>
-                    <li>${m.title.english || ''}</li>
-                    <li>${m.title.native}</li>
-                </ul>
 
-                <button onclick="removeBookmark(${m.id})">
-                    Remove
-                </button>
+            let cleanDesc = ""; // bookmarks don’t store description
+            let genres = "";
+
+            html += `
+            <div class="card">
+
+                <figure class="manga-card"
+                  onmouseenter="showPreviewCard(this, '', '', '${m.coverImage}', ${m.id})"
+                    onmouseleave="hidePreviewCard(this)">
+
+                    
+                    <a href="mangaDetails.html?id=${m.id}">
+                        <img src="${m.coverImage || 'https://via.placeholder.com/150x200'}">
+                    </a>
+
+                    <figcaption>
+                        <ul>
+                            <li class="card-title">${m.title?.romaji}</li>
+                        </ul>
+
+                        <button onclick="removeBookmark(${m.id})">
+                            Remove
+                        </button>
+                    </figcaption>
+
+                    <!--  HOVER -->
+                    <div class="hover-card"></div>
+
+                </figure>
+
             </div>`;
         }
 
@@ -772,4 +927,5 @@ function removeBookmark(id) {
     displayBookmarks();
 </script>
 </html>
+
 
