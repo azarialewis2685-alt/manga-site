@@ -4,9 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Manga Details</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+ 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-
+<link rel="stylesheet" href="../css/style.css">
 <style>
 body{
     margin:0;
@@ -97,37 +102,107 @@ main{
 <body>
 
 
-<header>
-    <h1>Manga<span class="accent">Scribe</span></h1>
-</header>
+  <!--SIDEBAR MENU -->
+    <div id="sidebar" class="sidebar">
+        <span class="close-btn" onclick="closeMenu()">✖</span>
 
-<main>
-    <main class="details-container">
-
-    <!-- LEFT -->
-    <div class="left">
-        <img id="image">
-
-        <button class="back-btn" onclick="goBack()">← Back</button>
+        <a href="index.html">Home</a>
+        <a href="#bkm">Bookmarks</a>
+        <a href="#">Filter by Genre</a>
+        <a href="mangaDetails.html">Random</a>
+        <a href="contact.html">Contact</a>
     </div>
 
-    <!-- CENTER -->
-    <div class="center">
-        <h2 id="title"></h2>
-        <p id="description"></p>
+<!-- HEADER -->
+    <header>
+        
+        <div id="logo" class="nav-links">
+          <span class="material-symbols-outlined" id="menu" onclick="openMenu()">menu</span>
+            <span class="material-symbols-outlined" id="bkm-logo">collections_bookmark</span>
+            <a href="index.html"><h1>Manga<span class="accent-color">Scribe</span></h1></a>
+        </div>
+
+        <!-- <div class="nav-links">
+            <!-- <a href="index.html">Browse Manga</a>
+            <a href="#">Filter by Genre</a>
+            <a href="#">Random</a>
+            <a href="profile.html" class="user-icon" aria-label="User Profile">
+                <i class="fa-solid fa-user"></i>
+            </a>
+        </div> -->
+       <div>
+        <a href="signup.html">
+            <button class="primary-btn">SIGN UP</button>
+        </a>
+
+        <a href="login.html">
+            <button class="secondary-btn">LOG IN</button>
+        </a>
+        </div>
+    </header>
+    <hr>
+
+    <div class="site"> 
+        <!-- MAIN -->
+        <main>
+            <section class="details-container">
+
+            <!-- LEFT -->
+            <div class="left">
+                <img id="image">
+
+                <button class="back-btn" onclick="goBack()">← Back</button>
+            </div>
+
+            <!-- CENTER -->
+            <div class="center">
+                <h2 id="title"></h2>
+                <p id="description"></p>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="right">
+                <h3>Details</h3>
+                <p>Status: <span id="status"></span></p>
+                <p>Chapters: <span id="chapters"></span></p>
+                <p>Score: <span id="score"></span></p>
+            </div>
+            </section>
+        </main>
+
+                <!-- FOOTER -->
+        <footer>
+            <nav>
+                <a href="index.html">Home</a> |
+                <a href="#">Bookmarks</a> |
+                <a href="#">Filter by Genre</a> |
+                <a href="#">Random</a> |
+                <a href="#">About</a> |
+                <a href="contact.html">Contact</a> |
+                <a href="#">Download</a>
+            </nav>
+        </footer>
     </div>
-
-    <!-- RIGHT -->
-    <div class="right">
-        <h3>Details</h3>
-        <p>Status: <span id="status"></span></p>
-        <p>Chapters: <span id="chapters"></span></p>
-        <p>Score: <span id="score"></span></p>
-    </div>
-
-</main>
-
 <script>
+function openMenu(){
+    document.getElementById("sidebar").style.left = "0";
+}
+window.onclick = function(event) {
+    let sidebar = document.getElementById("sidebar");
+    let menuBtn = document.getElementById("menu");
+
+    if (
+        event.target !== sidebar &&
+        !sidebar.contains(event.target) &&
+        event.target !== menuBtn
+    ) {
+        sidebar.style.left = "-250px";
+    }
+}
+
+function closeMenu(){
+    document.getElementById("sidebar").style.left = "-250px";
+}
 
 
 const params = new URLSearchParams(window.location.search);

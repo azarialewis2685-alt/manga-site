@@ -11,10 +11,21 @@
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
+    <!--SIDEBAR MENU -->
+    <div id="sidebar" class="sidebar">
+        <span class="close-btn" onclick="closeMenu()">✖</span>
+
+        <a href="index.html">Home</a>
+        <a href="#bkm">Bookmarks</a>
+        <a href="#">Filter by Genre</a>
+        <a href="mangaDetails.html">Random</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
     <!-- HEADER -->
     <header>
         <div id="logo" class="nav-links">
-            <span class="material-symbols-outlined" id="menu">menu</span>
+            <span class="material-symbols-outlined" id="menu" onclick="openMenu()">menu</span>
             <span class="material-symbols-outlined" id="bkm-logo">collections_bookmark</span>
             <a href="index.html"><h1>Manga<span class="accent-color">Scribe</span></h1></a>
         </div>
@@ -47,7 +58,7 @@
                 <input id="newUser" placeholder="Username or Email"><br><br>
                 <input id="newPass" type="password" placeholder="Password"><br><br>
 
-                <button class="primary-btn2" onclick="signup()">Sign Up</button>
+                <button class="primary-btn" onclick="signup()">Sign Up</button>
 
                 <p>Already have an account? <a href="login.html"><span class="accent-color"> Log in</span></a></p>
             </div>
@@ -68,6 +79,28 @@
     </div>
 
 <script>
+
+function openMenu(){
+    document.getElementById("sidebar").style.left = "0";
+}
+window.onclick = function(event) {
+    let sidebar = document.getElementById("sidebar");
+    let menuBtn = document.getElementById("menu");
+
+    if (
+        event.target !== sidebar &&
+        !sidebar.contains(event.target) &&
+        event.target !== menuBtn
+    ) {
+        sidebar.style.left = "-250px";
+    }
+}
+
+function closeMenu(){
+    document.getElementById("sidebar").style.left = "-250px";
+}
+
+
 function signup(){
 
     // simulate account creation
