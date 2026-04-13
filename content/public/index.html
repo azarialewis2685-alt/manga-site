@@ -103,6 +103,40 @@
             color: #444444;
             text-align: center;
         }
+        
+        .manga-card {
+    position: relative;
+}.card {
+    position: relative;
+    overflow: hidden;
+}
+.card button {
+    position: relative;
+    z-index: 10;
+}
+
+    .hover-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: white;
+    border-radius: 8px;
+    padding: 10px;
+
+    display: none;
+    flex-direction: column;
+
+    z-index: 5; /* 🔥 increase */
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    font-size: 12px;
+
+    overflow: hidden;
+}
+
 
         main{
             display: flex;
@@ -287,9 +321,15 @@
                 <i class="fa-solid fa-user"></i>
             </a>
         </div>
-        <div>
-            <button class="primary-btn">SIGN UP</button> <button class="secondary-btn">LOG IN</button>
-        </div>
+       <div>
+    <a href="signup.html">
+        <button class="primary-btn">SIGN UP</button>
+    </a>
+
+    <a href="login.html">
+        <button class="secondary-btn">LOG IN</button>
+    </a>
+</div>
         
     </header>
     <hr>
@@ -343,6 +383,16 @@
         <nav>Home, Bookmarks, Filter by Genre, Random, About, Contact, Download</nav>
     </footer> -->
     </div>
+    <div id="previewBox" style="
+    position:absolute;
+    background:#fff;
+    border:1px solid #ccc;
+    padding:10px;
+    max-width:250px;
+    display:none;
+    z-index:1000;
+    font-size:12px;
+"></div>
 </body>
 
 <script>
@@ -354,24 +404,23 @@ query (
   $page: Int = 1
   $type: MediaType
 ) {
-  Page(page: $page, perPage: 20) {
+  Page(page: $page, perPage:30 ) {
     pageInfo {
       hasNextPage
     }
-    media(
-      type: $type
-    ) {
-      id
-      title {
-        romaji
-        english
-        native
-      }
-        genres
-        coverImage{
-            extraLarge
-        }
-    }
+   media(type: $type) {
+  id
+  title {
+    romaji
+    english
+    native
+  }
+  description
+  genres
+  coverImage {
+    extraLarge
+  }
+}
   }
 }
 `;
@@ -417,39 +466,107 @@ function handleError(error) {
 }
 
 function showData(records){
-    console.log(records.data.Page.media);
     let array = records.data.Page.media;
+
+    allManga = array;
+
+    renderManga(array); // 🔥 use this instead
+}
+   function renderManga(array){
     let result = document.querySelector('#page');
     let html = '';
-    for (let rec of array){
-        html += `<div class="card">
-        <figure>
-            <a href="mangaDetails.html"><img src="${rec.coverImage.extraLarge}" alt="${rec.title.romaji}"></a>
-            <figcaption>                    
-                <ul>
-                <li class="card-title">${rec.title.romaji}</li>
-                <li>${rec.title.english}</li>
-                <li>${rec.title.native}</li>
 
-              <!--  <li class="genre"> `;
-        //     for(let g of rec.genres){
-        //         html +=`${g}, `;   
-        //     }
-         html += `</li> -->
-                <!--BOOKMARK BUTTON -->
-        <button onclick ='addBookmark(${JSON.stringify(rec)})'> Bookmark</button>
-                </ul>
-            </figcaption>
-        </figure>           
-        </div>`;
+    for (let rec of array){
+
+        // ✅ CLEAN DESCRIPTION (VERY IMPORTANT)
+        let cleanDesc = (rec.description || "")
+            .replace(/<[^>]+>/g, "")   // remove HTML
+            .replace(/["'`]/g, "")     // remove quotes
+            .substring(0, 120);        // shorten
+
+        let genres = rec.genres ? rec.genres.slice(0, 3).join(", ") : "";
+
+        html += `<div class="card">
+
+<figure class="manga-card"
+    onmouseenter="showPreviewCard(this, '${cleanDesc}', '${genres}', '${rec.coverImage?.extraLarge}')"
+    onmouseleave="hidePreviewCard(this)">
+
+    <a href="mangaDetails.html?id=${rec.id}">
+        <img src="${rec.coverImage?.extraLarge || 'https://via.placeholder.com/150'}">
+    </a>
+
+    <figcaption>
+        <ul>
+            <li class="card-title">${rec.title.romaji}</li>
+            <li>${rec.title.english || ''}</li>
+        </ul>
+
+        <button onclick="addBookmark(${rec.id})">
+            Bookmark
+        </button>
+    </figcaption>
+
+    <div class="hover-card"></div>
+
+</figure>
+
+</div>`;
     }
+
     result.innerHTML = html;
+}
+function showPreview(e, text){
+    let box = document.getElementById("previewBox");
+
+    if(!text) return;
+
+    box.innerHTML = text + "...";
+    box.style.display = "block";
+
+    // safer positioning
+    box.style.top = (e.clientY + 15) + "px";
+    box.style.left = (e.clientX + 15) + "px";
+}
+function hidePreview(){
+    document.getElementById("previewBox").style.display = "none";
+}
+    function searchManga(){
+    let query = document.getElementById("searchInput").value.toLowerCase();
+
+    let filtered = allManga.filter(manga => 
+        manga.title.romaji.toLowerCase().includes(query) ||
+        (manga.title.english && manga.title.english.toLowerCase().includes(query))
+    );
+
+    renderManga(filtered);
+}
+function showPreviewCard(element, desc, genres, image){
+
+    let card = element.querySelector(".hover-card");
+
+    card.innerHTML = `
+        <img src="${image}" style="width:100%; height:120px; object-fit:cover; border-radius:6px;">
+        <p><b>Genre:</b> ${genres}</p>
+        <p><b>Synopsis:</b> ${desc}...</p>
+    `;
+
+    card.style.display = "block";
+}
+
+function hidePreviewCard(element){
+    let card = element.querySelector(".hover-card");
+    card.style.display = "none";
 }
 function addBookmark(manga) {
    
+  if(localStorage.getItem("loggedIn") !== "true"){
+        alert("Please log in to bookmark manga");
+        return; // stop function
+    }
+
     let bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
 
-    
     let exists = bookmarks.some(item => item.id === manga.id);
 
     if (!exists) {
@@ -460,7 +577,7 @@ function addBookmark(manga) {
         alert("Already bookmarked!");
     }
 
-    console.log("Saved bookmarks:", bookmarks); // for testing
+    displayBookmarks();
 }
 
 function displayBookmarks() {
@@ -479,7 +596,9 @@ function displayBookmarks() {
 
         for (let m of bookmarks) {
             html += `
-            <div class="card">
+           <div class="card">
+    <img src="${m.coverImage?.extraLarge || 'https://via.placeholder.com/150'}"
+    style="width:100%; height:200px; object-fit:cover;">
                 <ul>
                     <li class="card-title">${m.title.romaji}</li>
                     <li>${m.title.english || ''}</li>
@@ -507,6 +626,9 @@ function removeBookmark(id) {
 
     displayBookmarks();
 }
+    window.onload = function(){
+    document.getElementById("searchInput").addEventListener("input", searchManga);
+};
     displayBookmarks();
 </script>
 </html>
