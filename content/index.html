@@ -166,7 +166,6 @@
         }
         div.card {
             background-color: #fff;
-            /* padding: 1em; */
             font-size: 12px;
             margin-bottom: 2em;
             display: flex;
@@ -250,6 +249,42 @@
             align-items: center;
             gap: 10px;
         }
+        .pagination{
+            display: flex;
+            align-items: center;
+            justify-content:center;
+            padding: 0px 0px;
+            border: none;
+            max-width: 70%;
+        }
+        .pagination ul{
+            margin: 0;
+            padding: 0;
+        }
+        .pagination ul li{
+            display: inline-block;
+            border: #ECE6F0 solid 1px;
+            padding: 8px 1em;
+            text-align: center;
+            font-size: 22px;
+            margin: 0 10px;
+            cursor: pointer;
+            background-position: 0 -45;
+            transition: background-color 0.5s;
+        }
+
+        .pagination button{
+            border-radius: 0;
+            padding: 8px;
+            border: none;
+            background-color: transparent;
+        }
+
+        .active{
+            background-position: 0 0;
+            background-color: #444444;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -260,14 +295,14 @@
             <span class="material-symbols-outlined" id="bkm-logo">collections_bookmark</span>
             <h1>Manga<span class="accent-color">Scribe</span></h1>
         </div>
-        <div class="nav-links">
+        <!-- <div class="nav-links">
             <a href="index.html">Browse Manga</a>
             <a href="#">Filter by Genre</a>
             <a href="#">Random</a>
             <a href="profile.html" class="user-icon" aria-label="User Profile">
                 <i class="fa-solid fa-user"></i>
             </a>
-        </div>
+        </div> -->
         <div>
             <button class="primary-btn">SIGN UP</button> <button class="secondary-btn">LOG IN</button>
         </div>
@@ -319,7 +354,22 @@
 
             </div>
         </section>
+
+
     </main>
+        <div class="pagination">
+            <button class="paginBtn" onclick="prev()"><span class="material-symbols-outlined">
+keyboard_double_arrow_left
+</span></button>
+            <ul id="pageList">
+                <li class="link active" value="1" onclick="active()">1</li>
+                <li class="link" value="2" onclick="active()">2</li>
+                <li class="link" value="3" onclick="active()">3</li>
+            </ul>
+            <button class="paginBtn" onclick="next()"><span class="material-symbols-outlined">
+double_arrow
+</span></button>
+        </div>
     <!-- <footer>
         <nav>Home, Bookmarks, Filter by Genre, Random, About, Contact, Download</nav>
     </footer> -->
@@ -327,12 +377,52 @@
 </body>
 
 <script>
-   let allManga = [];
+    let link = document.getElementsByClassName('link');
+    let currValue = 1;
+  getPage(currValue);
+
+    function active(){
+        for (l of link){
+            l.classList.remove("active");
+        }
+        event.target.classList.add("active");
+        currValue = event.target.value;
+        getPage(currValue);
+    }
+
+    function prev(){
+        if (currValue > 1){
+            for(l of link){
+                l.classList.remove("active");
+            }
+            currValue --;
+            link[currValue-1].classList.add("active");
+        }
+        getPage(currValue);
+    }
+
+    function next(){
+        let count = 0;
+        for (l of link){
+            count++;
+        }
+        if (currValue < count){
+            for(l of link){
+                l.classList.remove("active");
+            }
+            currValue ++;
+            link[currValue-1].classList.add("active");
+        }
+        getPage(currValue)
+    }
+
+    let allManga = [];
 // Here we define our query as a multi-line string
 // Storing it in a separate .graphql/.gql file is also possible
-const query = `
+function getPage(val){
+let query = `
 query (
-  $page: Int = 1
+  $page: Int = ${val}
   $type: MediaType
 ) {
   Page(page: $page, perPage: 20) {
@@ -363,7 +453,7 @@ const variables = {
 };
 
 // Define the config we'll need for our Api request
-const url = 'https://graphql.anilist.co',
+let url = 'https://graphql.anilist.co',
     options = {
         method: 'POST',
         headers: {
@@ -380,12 +470,16 @@ const url = 'https://graphql.anilist.co',
 fetch(url, options).then(handleResponse)
     .then(handleData)
     .catch(handleError);
+    console.log(options);
+}
+
 
 function handleResponse(response) {
     return response.json().then(function (json) {
         return response.ok ? json : Promise.reject(json);
     });
 }
+
 
 function handleData(data) {
     console.log(data);
@@ -426,6 +520,7 @@ function showData(records){
     }
     result.innerHTML = html;
 }
+display
 function addBookmark(manga) {
    
     let bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
