@@ -65,10 +65,7 @@ h1{
     display:inline;
 
 }
-/* h2{
-    padding-left: 5em;
-    text-align: center;
-} */
+
 h2{
     padding-left: 2em;
 }
@@ -395,9 +392,7 @@ div.card {
     'GRAD' 0,
     'opsz' 30
 }
-#menu{
-    padding: 1em;
-}
+
 #bkm-logo{
     color: #FEC63D;
     font-size: 26px;

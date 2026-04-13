@@ -30,195 +30,321 @@
     <script defer src="/__/firebase/init.js?useEmulator=true"></script>
     
     <link rel="stylesheet" href="../css/style.css">
-    <!-- <style>
-        *{
-            box-sizing: border-box;
-        }
+    
+    <!-- <link rel="stylesheet" href="../css/style.css"> -->
+    <style>
+         *{
+    box-sizing: border-box;
+    /* margin: 0;
+    padding: 0; */
+}
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+    background-color: #fff;
+    /* background-color: #F7F6F6; */
+    color: #444444;
+    font-family: "Montserrat", sans-serif;
+    /*font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;*/
+}
+header{
+    flex-grow: 1;
+    max-height: 10%;
+    width: 100%;
+    padding: 1em 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-        body{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100vw;
-            height: 100vh;
-            margin: 0;
-            background-color: #F7F6F6;
-            color: #444444;
-            font-family: "Montserrat", sans-serif;
-        }
+.accent-color{
+    font-weight: bold;
+    color: #FEC63D;
+    transition: 0.2s;
+}
+a{
+    text-decoration: none;
+}
 
-        header{
-            flex-grow: 1;
-            max-height: 10%;
-            width: 100%;
-            padding: 1em 1em;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        header img{
-            width: 20px;
-            height: 20px;
-        }
-        header#logo {
-            display: flex;
-            justify-content: space-evenly;
-        }
-        h1{
-            margin: 0;
-            display:inline;
-        }
-        h2{
-            padding-left: 5em;
-            text-align: center;
-            
-            
-        }
+a:hover{
+    color: #FEC63D;
+    text-decoration: underline;
+}
+header#logo {
+    display: flex;
+    justify-content: space-evenly;
+}
 
-        .accent-color{
-            font-weight: bold;
-            color: #FEC63D;
-        }
+#logo a{
+    color: #444444;
+    transition: 0.2s;
+}
+#logo a:hover{
+    color: #FEC63D;
+    opacity: 0.8;
+}
 
-        button{
-            padding: 0.5em;
-            border-radius: 4px;
-            font-weight: 600;
-            cursor: pointer;
-            border: 2px solid #444444;
-            transition: 0.3s;
-        }
+#logo .accent-color:hover{
+    opacity: 0.8;
+}
 
-        button:hover{
-            background-color: #FEC63D;
-            color: #444444;
-            border-color: #FEC63D;
-        }
+h1{
+    margin: 0;
+    display:inline;
 
-        .primary-btn{
-            background-color: #444444;
-            color: #F7F6F6;
-            width: 50%;
-        }
+}
 
-        .secondary-btn{
-            background: transparent;
-            color: #444444;
-        }
-        #menu{
-            padding: 1em;
-        }
-        main{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-grow: 9;
-            width: 100%;
-        }
+h2{
+    padding-left: 2em;
+}
 
-        /* CONTACT BOX */
-        .contact-box{
-            background-color: #EEEEEE;
-            padding: 2em;
-            border-radius: 16px;
-            width: 420px;
-            text-align: center;
-        }
 
-        .contact-box h2{
-            margin-bottom: 1em;
-        }
+.site{
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    flex-grow: 9;
+    max-height: 90%;
+    width: 100%;
+    align-items: center;
+}
 
-        label{
-            display: block;
-            text-align: left;
-            font-size: 12px;
-            margin-top: 10px;
-        }
 
-        input, textarea{
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-family: "Montserrat", sans-serif;
-            font-size: 12px;
-        }
+button{
+    padding: 0.5em;
+    border-radius: 24px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid #444444;
+    transition: 0.2s;
+}
+button:hover{
+    background-color: #FEC63D;
+    color: #444444;
+    border-color: #FEC63D;
+    opacity: 0.8;
+}
 
-        textarea{
-            height: 100px;
-            width: 100%;
-            resize: none;
-        }
+.primary-btn{
+    background-color: #444444;
+    color: #F7F6F6;
+}
 
-        .contact-box button{
-            width: 100%;
-            margin-top: 15px;
-        }
+.secondary-btn{
+    background: transparent;
+    
+    border-radius: 24px;
+    color: #444444;
+    text-align: center;
+}
 
-        .divider{
-            margin: 20px 0;
-            display: flex;
-            align-items: center;
-            font-size: 12px;
-            color: #888;
-        }
 
-        .divider::before,
-        .divider::after{
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: #ccc;
-        }
+.card {
+    position: relative;
+    overflow: hidden;
+}
+.card button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+}
+.material-symbols-outlined:hover{
+    font-variation-settings: 'FILL' 1
+}
 
-        .divider span{
-            margin: 0 10px;
-        }
+ #menu{
+    padding: 1em;
+    cursor: pointer;
+}
+#menu:hover{
+    color: #FEC63D;
+}        
 
-        footer{
-            width: 100%;
-            background-color: #a0a0a0;
-            padding: 2em;
-            text-align: center;
-        }
+/* CONTACT BOX */
+.contact-box{
+    background-color: #EEEEEE;
+    padding: 2em;
+    border-radius: 16px;
+    width: 50%;
+    max-width: 420px;
+    height: 100%;
+    text-align: center;
+    font-size: 12px;
+    margin: 5% 0px;
+}
 
-        footer a{
-            text-decoration: none;
-            color: #444444;
-            margin: 0 5px;
-        }
+.contact-box button{
+    padding: 0.5em;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
-        footer a:hover{
-            color: #FEC63D;
-        }
-        .material-symbols-outlined {
-            font-variation-settings:
-            'FILL' 0,
-            'wght' 400,
-            'GRAD' 0,
-            'opsz' 30
-        }
-        .message-label {
-            display: block;
-            margin-top: 60px; 
-        }
-        #bkm-logo{
-            color: #FEC63D;
-            font-size: 26px;
-        }
-        .nav-links a {
-            font-size: 20px;      
-            font-weight: 600;
-            text-decoration: none;
-            color: #444444;
-            margin-left: 20px;
-        }
+.contact-box h2{
+    padding: 0;
+    margin-bottom: 1em;
+    font-size: 20px;
+}
+label{
+    display: block;
+    text-align: left;
+    font-size: 12px;
+    margin-top: 10px;
+}
+input, textarea{
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-family: "Montserrat", sans-serif;
+    font-size: 12px;
+}
+textarea{
+    height: 100px;
+    width: 100%;
+    resize: none;
+}
+.contact-box button{
+    width: 100%;
+    margin-top: 15px;
+}
 
-        .nav-links a:hover {
-            color: #FEC63D;
-        }
+.divider{
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: #888;
+}
+
+.divider::before,
+.divider::after{
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #ccc;
+}
+
+.divider span{
+    margin: 0 10px;
+}
+
+
+main{
+    display: flex;
+    flex-direction: column;
+    /* flex-grow: 7; 
+    max-height: 70%; */
+    max-width: 100%;
+    flex-grow: 9;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+footer{
+    flex-grow: 1;
+    max-height: 1%;
+    width: 100%;
+    background-color: #ECE6F0;
+    padding: 6em 0px;
+    width: 100%;
+    text-align: center;
+}
+
+footer a{
+    text-decoration: none;
+    color: #444444;
+    margin: 0 5px;
+}
+
+footer a:hover{
+    color: #FEC63D;
+}
+
+hr{
+    width: 90%;
+    margin: 0;
+}
+
+
+.material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 30
+}
+
+#bkm-logo{
+    color: #FEC63D;
+    font-size: 26px;
+}
+
+.message-label {
+    display: block;
+    margin-top: 60px; 
+}
+
+/*  SIDEBAR STYLE */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* hidden */
+    width: 250px;
+    height: 100%;
+    background: #ECE6F0;
+    padding: 0px;
+    transition: 0.3s;
+    z-index: 1000;
+}
+
+.sidebar a {
+    display: block;
+    width: 100%;
+    padding: 15px 1em;
+    text-decoration: none;
+    color: #444;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.sidebar a:hover {
+    /* color: #FEC63D; */
+    background-color: #ccc;
+}
+
+.close-btn {
+    font-size: 20px;
+    cursor: pointer;
+    padding: 1em;
+    padding-left: 90%;
+}
+.active-page {
+    background: #444;
+    color: white;
+}
+   .card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}     
         .social-icons a {
             font-size: 20px;
             margin-right: 10px;
@@ -235,7 +361,7 @@
             gap: 10px;
         }
         
-    </style> -->
+    </style>
 </head>
 
 <body>

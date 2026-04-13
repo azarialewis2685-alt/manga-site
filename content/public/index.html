@@ -446,7 +446,7 @@ button:hover {
         <section id="srch">
             <div class="sbar">
                 <input id="searchInput" type="search" placeholder="Search for a manga">
-                <button><span class="material-symbols-outlined">search</span></button>
+                <button onclick="searchQ()"><span class="material-symbols-outlined">search</span></button>
             </div>
         </section>
 
@@ -571,12 +571,13 @@ let query = `
 query (
   $page: Int = ${val}
   $type: MediaType
+  $isAdult: Boolean = false
 ) {
   Page(page: $page, perPage:30 ) {
     pageInfo {
       hasNextPage
     }
-   media(type: $type) {
+   media(isAdult: $isAdult, type: $type) {
   id
   title {
     romaji
@@ -727,19 +728,82 @@ function showPreview(e, text){
 function hidePreview(){
     document.getElementById("previewBox").style.display = "none";
 }
-    function searchManga(){
+
+function searchManga(){
     let query = document.getElementById("searchInput").value.toLowerCase();
 
     let filtered = allManga.filter(manga => 
         manga.title.romaji.toLowerCase().includes(query) ||
         (manga.title.english && manga.title.english.toLowerCase().includes(query))
     );
-if(filtered.length === 0){
-    document.querySelector('#page').innerHTML = "<p>No manga found</p>";
-    return;
-}
+    if(filtered.length === 0){
+        document.querySelector('#page').innerHTML = "<p>No manga found</p>";
+        return;
+    }
     renderManga(filtered);
 }
+
+function searchQ(){
+    currValue = 1;
+  getPagebySearch(currValue);
+}
+function getPagebySearch(val){
+let srch = document.getElementById("searchInput").value.toLowerCase();
+
+let q = `
+query (
+  $page: Int = ${val}
+  $type: MediaType
+  $search: String!
+  $isAdult: Boolean = false
+) {
+  Page(page: $page, perPage:30 ) {
+    pageInfo {
+      hasNextPage
+    }
+   media(isAdult: $isAdult, search: $search, type: $type) {
+  id
+  title {
+    romaji
+    english
+    native
+  }
+  description
+  genres
+  coverImage {
+    extraLarge
+  }
+}
+  }
+}
+`;
+
+const srchVariables = {
+    type: 'MANGA',
+    search: `${srch}`,
+};
+
+let url = 'https://graphql.anilist.co',
+    options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+            query: q,
+            variables: srchVariables
+        })
+    };
+
+    fetch(url, options).then(handleResponse)
+    .then(handleData)
+    .catch(handleError);
+    console.log(options);
+}
+
+
+
 function showPreviewCard(element, desc, genres, image, id){
 
     let card = element.querySelector(".hover-card");
