@@ -67,46 +67,88 @@ main{
     background:#FEC63D;
     color:#444;
 }
+
+
+.details-container{
+    display:flex;
+    gap:40px;
+    padding:40px;
+    align-items:flex-start;
+}
+
+.left{
+    width:250px;
+}
+
+.center{
+    flex:1;
+    text-align:left;
+}
+
+.right{
+    width:250px;
+    background:#f4f4f4;
+    padding:15px;
+    border-radius:10px;
+}
 </style>
 </head>
 
 <body>
+
 
 <header>
     <h1>Manga<span class="accent">Scribe</span></h1>
 </header>
 
 <main>
-    <h2 id="title"></h2>
-    <img id="image">
-    <p id="description"></p>
+    <main class="details-container">
 
-    <button class="back-btn" onclick="goBack()">← Back</button>
+    <!-- LEFT -->
+    <div class="left">
+        <img id="image">
+
+        <button class="back-btn" onclick="goBack()">← Back</button>
+    </div>
+
+    <!-- CENTER -->
+    <div class="center">
+        <h2 id="title"></h2>
+        <p id="description"></p>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right">
+        <h3>Details</h3>
+        <p>Status: <span id="status"></span></p>
+        <p>Chapters: <span id="chapters"></span></p>
+        <p>Score: <span id="score"></span></p>
+    </div>
+
 </main>
 
 <script>
 
-// 🔥 GET ID FROM URL
+
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
-// 🔥 GRAPHQL QUERY
+
+
 const query = `
 query ($id: Int) {
   Media(id: $id, type: MANGA) {
-    title {
-      romaji
-      english
-    }
+    title { romaji english }
     description
-    coverImage {
-      extraLarge
-    }
+    status
+    chapters
+    averageScore
+    coverImage { extraLarge }
   }
 }
-`;
+`;;
 
-// 🔥 FETCH DATA
+//  FETCH DATA
 fetch('https://graphql.anilist.co', {
     method:'POST',
     headers:{'Content-Type':'application/json'},
@@ -118,6 +160,9 @@ fetch('https://graphql.anilist.co', {
 .then(res=>res.json())
 .then(data=>{
     let manga = data.data.Media;
+    document.getElementById("status").innerText = manga.status || "N/A";
+document.getElementById("chapters").innerText = manga.chapters || "N/A";
+document.getElementById("score").innerText = manga.averageScore || "N/A";
 
     // SET TITLE
     document.getElementById("title").innerText =
@@ -135,7 +180,7 @@ fetch('https://graphql.anilist.co', {
     document.getElementById("description").innerText = cleanDesc;
 });
 
-// 🔙 BACK BUTTON
+//  BACK BUTTON
 function goBack(){
     window.history.back();
 }
