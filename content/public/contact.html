@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <style>
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- <style>
         *{
             box-sizing: border-box;
         }
@@ -216,7 +217,7 @@
             gap: 10px;
         }
         
-    </style>
+    </style> -->
 </head>
 
 <body>
@@ -228,62 +229,70 @@
             <span class="material-symbols-outlined" id="bkm-logo">collections_bookmark</span>
             <h1>Manga<span class="accent-color">Scribe</span></h1>
         </div>
-        <div class="nav-links">
+        <!-- <div class="nav-links">
             <a href="index.html">Browse Manga</a>
             <a href="#">Filter by Genre</a>
             <a href="#">Random</a>
             <a href="profile.html" class="user-icon" aria-label="User Profile">
                 <i class="fa-solid fa-user"></i>
             </a>
-        </div>
+        </div> -->
+        <div>
+            <a href="signup.html">
+                <button class="primary-btn">SIGN UP</button>
+            </a>
 
-        
+            <a href="login.html">
+                <button class="secondary-btn">LOG IN</button>
+            </a>
+        </div>
     </header>
 
     <hr style="width: 90%; margin: 0;">
+    
+    <div class="site">
+        <!-- MAIN -->
+        <main>
+            <div class="contact-box">
 
-    <!-- MAIN -->
-    <main>
-        <div class="contact-box">
+                <form>
+                    <b><label>Full Name</label></b>
+                    <input type="text" placeholder="Your name">
 
-            <form>
-                <b><label>Full Name</label></b>
-                <input type="text" placeholder="Your name">
+                    <b><label>Email</label></b>
+                    <input type="email" placeholder="Your email address">
 
-                <b><label>Email</label></b>
-                <input type="email" placeholder="Your email address">
+                    <b><label class="message-label">Leave us a message</label></b>
+                    <textarea placeholder="Write your message here..."></textarea>
+                    
+                    
+                    <button class="primary-btn">Send Message</button>
+                </form>
 
-                <b><label class="message-label">Leave us a message</label></b>
-                <textarea placeholder="Write your message here..."></textarea>
-                
-                
-                <button class="primary-btn">Send Message</button>
-            </form>
+                <div class="divider"><span>or</span></div>
 
-            <div class="divider"><span>or</span></div>
+                <div class="social-row">
+        <p style="font-size:12px; margin:0;">Reach out to us:</p>
 
-            <div class="social-row">
-    <p style="font-size:12px; margin:0;">Reach out to us:</p>
+            <div class="social-icons">
+                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
+        </div>
+        </main>
 
-        <div class="social-icons">
-             <a href="#"><i class="fa-brands fa-facebook"></i></a>
-            <a href="#"><i class="fa-brands fa-instagram"></i></a>
-            <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
-         </div>
+        <footer>
+            <nav>
+                <a href="index.html">Home</a> |
+                <a href="#">Bookmarks</a> |
+                <a href="#">Filter by Genre</a> |
+                <a href="#">Random</a> |
+                <a href="#">About</a> |
+                <a href="contact.html">Contact</a> |
+                <a href="#">Download</a>
+            </nav>
+        </footer>
     </div>
-    </main>
-
-    <footer>
-        <nav>
-            <a href="index.html">Home</a> |
-            <a href="#">Bookmarks</a> |
-            <a href="#">Filter by Genre</a> |
-            <a href="#">Random</a> |
-            <a href="#">About</a> |
-            <a href="contact.html">Contact</a> |
-            <a href="#">Download</a>
-        </nav>
-    </footer>
-
 </body>
 </html>
