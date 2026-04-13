@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Home</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
  
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    
     <style>
         *{
             box-sizing: border-box;
@@ -39,10 +40,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-        header img{
-            width: 20px;
-            height: 20px;
         }
         header#logo {
             display: flex;
@@ -195,6 +192,9 @@
             flex-grow: 9;
             max-height: 90%;
             object-fit: cover;
+        }
+        .card figure a{
+            display: contents;
         }
         .card figure ul{
             margin: 0;
@@ -405,7 +405,7 @@ function showData(records){
     for (let rec of array){
         html += `<div class="card">
         <figure>
-            <img src="${rec.coverImage.extraLarge}" alt="${rec.title.romaji}">
+            <a href="./mangaDetails.html"><img src="${rec.coverImage.extraLarge}" alt="${rec.title.romaji}"></a>
             <figcaption>                    
                 <ul>
                 <li class="card-title">${rec.title.romaji}</li>
