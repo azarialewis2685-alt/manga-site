@@ -208,7 +208,7 @@
             line-height: 1.5;
             letter-spacing: 0.5px;
             font-size: 20px;
-            padding-left: 5%;
+            padding-left: 1em;
         }
         .no-bkmarks button{
             padding: 1.4em;
@@ -393,16 +393,17 @@
         </section>
 
         <section id="bkm">
-           <h2>Your Bookmarks</h2>
+           <!-- <h2>Your Bookmarks</h2>
             <hr>
             <div class="no-bkmarks">
-            <p><span class="accent-color">Log in</span> to view you bookmarks <br>or <span class="accent-color">Sign up</span> to start bookmarking</p>
+
+            <!-- <p><span class="accent-color">Log in</span> to view you bookmarks <br>or <span class="accent-color">Sign up</span> to start bookmarking</p>
             <div>
                 <a href="signup.html"><button class="primary-btn">SIGN UP</button></a> 
                 <a href="login.html"><button class="secondary-btn">LOG IN</button></a>
-            </div>
-            
             </div> 
+            
+            </div>  -->
         </section>
         
         <section id="browse">
@@ -588,15 +589,14 @@ function showData(records){
 
     allManga = array;
 
-    renderManga(array); // 🔥 use this instead
+    renderManga(array); 
 }
-   function renderManga(array){
+function renderManga(array){
     let result = document.querySelector('#page');
     let html = '';
 
     for (let rec of array){
-
-        // ✅ CLEAN DESCRIPTION (VERY IMPORTANT)
+    
         let cleanDesc = (rec.description || "")
             .replace(/<[^>]+>/g, "")   // remove HTML
             .replace(/["'`]/g, "")     // remove quotes
@@ -606,34 +606,35 @@ function showData(records){
 
         html += `<div class="card">
 
-<figure class="manga-card"
-    onmouseenter="showPreviewCard(this, '${cleanDesc}', '${genres}', '${rec.coverImage?.extraLarge}')"
-    onmouseleave="hidePreviewCard(this)">
+                    <figure class="manga-card"
+                        onmouseenter="showPreviewCard(this, '${cleanDesc}', '${genres}', '${rec.coverImage?.extraLarge}')"
+                        onmouseleave="hidePreviewCard(this)">
 
-    <a href="mangaDetails.html?id=${rec.id}">
-        <img src="${rec.coverImage?.extraLarge || 'https://via.placeholder.com/150'}">
-    </a>
+                        <a href="mangaDetails.html?id=${rec.id}">
+                            <img src="${rec.coverImage?.extraLarge || 'https://via.placeholder.com/150'}">
+                        </a>
 
-    <figcaption>
-        <ul>
-            <li class="card-title">${rec.title.romaji}</li>
-            <li>${rec.title.english || ''}</li>
-        </ul>
+                        <figcaption>
+                            <ul>
+                                <li class="card-title">${rec.title.romaji}</li>
+                                <li>${rec.title.english || ''}</li>
+                            </ul>
 
-        <button onclick="addBookmark(${rec.id})">
-            Bookmark
-        </button>
-    </figcaption>
+                            <button onclick="addBookmark(${rec.id})">
+                                Bookmark
+                            </button>
+                        </figcaption>
 
-    <div class="hover-card"></div>
+                        <div class="hover-card"></div>
 
-</figure>
+                    </figure>
 
-</div>`;
-    }
+                </div>`;
+        }
 
     result.innerHTML = html;
 }
+
 function showPreview(e, text){
     let box = document.getElementById("previewBox");
 
@@ -676,6 +677,26 @@ function hidePreviewCard(element){
     let card = element.querySelector(".hover-card");
     card.style.display = "none";
 }
+
+async function loggedIn(){
+    let res = document.querySelector('#bkm');
+    let html = `<h2>Your Bookmarks</h2><hr>`;
+    if( await localStorage.getItem("loggedIn") !== "true"){
+    
+    html += `<div class="no-bkmarks">
+                <p><span class="accent-color">Log in</span> to view you bookmarks <br>or <span class="accent-color">Sign up</span> to start bookmarking</p>
+                <div>
+                    <a href="signup.html"><button class="primary-btn">SIGN UP</button></a> 
+                    <a href="login.html"><button class="secondary-btn">LOG IN</button></a>
+                </div>
+            </div>`;
+    res.innerHTML = html;
+    }
+    else{
+        displayBookmarks();
+    }
+}
+loggedIn();
 function addBookmark(manga) {
    
   if(localStorage.getItem("loggedIn") !== "true"){
@@ -699,6 +720,7 @@ function addBookmark(manga) {
 }
 
 function displayBookmarks() {
+    console.log('displaying bookmarks');
     let bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
     let section = document.querySelector('#bkm');
 
