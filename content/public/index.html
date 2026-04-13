@@ -152,7 +152,18 @@
             width: 100%;
             background-color: #ECE6F0;
             padding: 6em 0px;
+            width: 100%;
             text-align: center;
+        }
+
+        footer a{
+            text-decoration: none;
+            color: #444444;
+            margin: 0 5px;
+        }
+
+        footer a:hover{
+            color: #FEC63D;
         }
 
         #srch{
@@ -309,6 +320,7 @@
             padding: 0px 0px;
             border: none;
             max-width: 70%;
+            margin-bottom: 10%;
         }
         .pagination ul{
             margin: 0;
@@ -338,6 +350,8 @@
             background-color: #444444;
             color: #fff;
         }
+
+        
     </style>
 </head>
 <body>
@@ -357,17 +371,17 @@
             </a>
         </div> -->
        <div>
-    <a href="signup.html">
-        <button class="primary-btn">SIGN UP</button>
-    </a>
+        <a href="signup.html">
+            <button class="primary-btn">SIGN UP</button>
+        </a>
 
-    <a href="login.html">
-        <button class="secondary-btn">LOG IN</button>
-    </a>
-</div>
-        
+        <a href="login.html">
+            <button class="secondary-btn">LOG IN</button>
+        </a>
+        </div>
     </header>
     <hr>
+
     <div class="site">
     <main>
         <section id="srch">
@@ -383,7 +397,8 @@
             <div class="no-bkmarks">
             <p><span class="accent-color">Log in</span> to view you bookmarks <br>or <span class="accent-color">Sign up</span> to start bookmarking</p>
             <div>
-                <button class="primary-btn">SIGN UP</button> <button class="secondary-btn">LOG IN</button>
+                <a href="signup.html"><button class="primary-btn">SIGN UP</button></a> 
+                <a href="login.html"><button class="secondary-btn">LOG IN</button></a>
             </div>
             
             </div> 
@@ -429,9 +444,17 @@ keyboard_double_arrow_left
 double_arrow
 </span></button>
         </div>
-    <!-- <footer>
-        <nav>Home, Bookmarks, Filter by Genre, Random, About, Contact, Download</nav>
-    </footer> -->
+   <footer>
+        <nav>
+            <a href="index.html">Home</a> |
+            <a href="#">Bookmarks</a> |
+            <a href="#">Filter by Genre</a> |
+            <a href="#">Random</a> |
+            <a href="#">About</a> |
+            <a href="contact.html">Contact</a> |
+            <a href="#">Download</a>
+        </nav>
+    </footer>
     </div>
     <div id="previewBox" style="
     position:absolute;
