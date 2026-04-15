@@ -5,7 +5,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
- 
+    <link rel="manifest" href="app.webmanifest">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
     <!-- <link rel="stylesheet" href="../css/style.css"> -->
@@ -411,7 +411,7 @@ hr{
                 <a href="#">Random</a> |
                 <a href="#">About</a> |
                 <a href="contact.html">Contact</a> |
-                <a href="#">Download</a>
+                <a href="#" id="dl">Download</a>
             </nav>
         </footer>
     </div>
@@ -450,6 +450,21 @@ function signup(){
     // redirect back to main page
     window.location.href = "index.html";
 }
+    let deferredPrompt;
+    const installButton = document.getElementById('dl');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault(); // Prevent default mini-infobar
+    deferredPrompt = e; // Save the event
+    });
+
+    installButton.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`User response: ${outcome}`);
+    deferredPrompt = null;
+    });
 </script>
 
 </body>

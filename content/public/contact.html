@@ -28,7 +28,7 @@
       to avoid connecting the SDK to running emulators.
     -->
     <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-    
+    <link rel="manifest" href="app.webmanifest">
     <link rel="stylesheet" href="../css/style.css">
     
     <!-- <link rel="stylesheet" href="../css/style.css"> -->
@@ -444,7 +444,7 @@ hr{
                 <a href="#">Random</a> |
                 <a href="#">About</a> |
                 <a href="contact.html">Contact</a> |
-                <a href="#">Download</a>
+                <a href="#" id="dl">Download</a>
             </nav>
         </footer>
     </div>
@@ -469,7 +469,21 @@ window.onclick = function(event) {
 function closeMenu(){
     document.getElementById("sidebar").style.left = "-250px";
 }
+    let deferredPrompt;
+    const installButton = document.getElementById('dl');
 
+    window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault(); // Prevent default mini-infobar
+    deferredPrompt = e; // Save the event
+    });
+
+    installButton.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`User response: ${outcome}`);
+    deferredPrompt = null;
+    });
 </script>
 </body>
 

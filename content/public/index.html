@@ -27,7 +27,7 @@
       to avoid connecting the SDK to running emulators.
     -->
     <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-
+    <link rel="manifest" href="app.webmanifest">
     <link rel="stylesheet" href="../css/style.css">
      <style>
         *{
@@ -95,7 +95,6 @@ header#logo {
 h1{
     margin: 0;
     display:inline;
-
 }
 
 h2{
@@ -471,7 +470,21 @@ div.card {
 .card:hover {
     transform: scale(1.05);
 }     
-
+@media screen and (max-width: 574px){
+    h1{
+        font-size: 1em;
+    }
+    header button{
+        font-size: 10px;
+        width:40px;
+    }
+    #logo a{
+        margin: 0;
+    }
+     #menu{
+        padding: 2px;
+    } 
+}   
     </style>
 </head>
 <body>
@@ -582,7 +595,7 @@ div.card {
             <a href="#">Random</a> |
             <a href="#">About</a> |
             <a href="contact.html">Contact</a> |
-            <a href="#">Download</a>
+            <a href="#" id="dl">Download</a>
         </nav>
     </footer>
     </div>
@@ -692,7 +705,7 @@ let url = 'https://graphql.anilist.co',
 fetch(url, options).then(handleResponse)
     .then(handleData)
     .catch(handleError);
-    console.log(options);
+    //console.log(options);
 }
 
 
@@ -1058,6 +1071,23 @@ function removeBookmark(id) {
     document.getElementById("searchInput").addEventListener("input", searchManga);
 };
     displayBookmarks();
+
+
+    let deferredPrompt;
+    const installButton = document.getElementById('dl');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault(); // Prevent default mini-infobar
+    deferredPrompt = e; // Save the event
+    });
+
+    installButton.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`User response: ${outcome}`);
+    deferredPrompt = null;
+    });
 </script>
 </html>
 
