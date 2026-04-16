@@ -8,13 +8,13 @@
     "screenshots":[
         {
             "sizes": "1362x767",
-            "src": "icons/screenshotLogged.png",
+            "src": "./icons/screenshotLogged.png",
             "type": "image/png",
             "form_factor":"wide"
         },
         {
             "sizes": "367x703",
-            "src": "icons/scrnMobile.png",
+            "src": "./icons/scrnMobile.png",
             "type": "image/png",
             "form_factor":"narrow"
         }
@@ -23,31 +23,31 @@
         {
             "purpose": "maskable",
             "sizes": "1024x1024",
-            "src": "icons/maskable_icon.png",
+            "src": "./icons/maskable_icon.png",
             "type": "image/png"
         },
         {
             "purpose": "maskable",
             "sizes": "192x192",
-            "src": "icons/maskable_icon_x192.png",
+            "src": "./icons/maskable_icon_x192.png",
             "type": "image/png"
         },
         {
             "purpose": "maskable",
             "sizes": "384x384",
-            "src": "icons/maskable_icon_x384.png",
+            "src": "./icons/maskable_icon_x384.png",
             "type": "image/png"
         },
         {
             "purpose": "maskable",
             "sizes": "512x512",
-            "src": "icons/maskable_icon_x512.png",
+            "src": "./icons/maskable_icon_x512.png",
             "type": "image/png"
         },
         {
             "purpose": "any",
             "sizes": "512x512",
-            "src": "icons/maskable_icon_x512.png",
+            "src": "./icons/maskable_icon_x512.png",
             "type": "image/png"
         }
     ],
