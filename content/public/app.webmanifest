@@ -1,13 +1,41 @@
 {
-  "name": "Test App",
-  "short_name": "Test",
-  "start_url": "/",
+  "name": "Manga Scribe",
+  "short_name": "MngaS",
+  "start_url": "/https://mangacorpstt.web.app/",
   "display": "standalone",
   "icons": [
     {
       "src": "/icons/maskable_icon_x192.png",
       "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/maskable_icon_x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/maskable_icon_x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+
+  "screenshots": [
+    {
+      "src": "/icons/screenshotLogged.png",
+      "sizes": "1362x767",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/icons/scrnMobile.png",
+      "sizes": "367x703",
       "type": "image/png"
     }
   ]
+
 }
